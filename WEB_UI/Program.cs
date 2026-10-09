@@ -3,6 +3,18 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+//agregar la configuracion para acceder al session del login
+builder.Services.AddHttpContextAccessor();
+
+//configurar manejo de la sesion
+builder.Services.AddSession(session =>
+{
+    session.IdleTimeout = TimeSpan.FromSeconds(60);
+    session.Cookie.HttpOnly = true;
+    session.Cookie.IsEssential = false;
+    session.Cookie.Name = "LIMBERTH-CLINIC-COOKIE";
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -25,5 +37,6 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
+app.UseSession();
 
 app.Run();
