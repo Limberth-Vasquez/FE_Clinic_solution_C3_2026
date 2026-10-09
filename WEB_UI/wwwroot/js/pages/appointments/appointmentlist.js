@@ -2,6 +2,12 @@
 
     this.InitView = () => {
         this.GetPatientById();
+        this.LoadContextInformation();
+
+        $('#btnCreate').click(() => {
+            var view = new AppointmentList();
+            view.RedirectCreateAppointment();
+        });
     };
 
     this.GetPatientById = () => {
@@ -33,6 +39,13 @@
 
     };
 
+    this.LoadContextInformation = () => {
+        $('#txtPacientData').val(sessionStorage["PatientData"]);
+    };
+
+    this.RedirectCreateAppointment = () => {
+        window.location = '/Appointment/CreateAppointment';
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
