@@ -38,7 +38,11 @@
                     title: 'Exito!',
                     text: response.data
                 }).then(() => {
-                    window.location = '/Appointment/AppointmentList'
+                    //aca notificamos por correo al paciente que se ha creado la cita
+                    let view = new CreateAppointment();
+                    view.CommunicatePatient();
+
+                    window.location = '/Appointment/AppointmentList';
                 });
             } else {
                 swal.fire({
@@ -59,7 +63,6 @@
             });
 
     };
-
 
     this.PopulateSpecialties = () => {
         $.ajax({
@@ -93,6 +96,20 @@
                     text: "Hubo un problema " + error
                 });
             });
+    };
+
+    this.CommunicatePatient = () => {
+        $.ajax({
+            url: API_URL_BASE + "/api/Communications/EnviarCorreo?emailAddress=" + "lvasquezq@ucenfotec.ac.cr", //sessionstorage["patientEmail"],
+            method: "GET",
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+        }).done((response) => {
+            console.info("correo enviado, " , response);
+        })
+         .fail((error) => {
+             console.error("Error del ajax", error);
+         });    
     };
 
 }
